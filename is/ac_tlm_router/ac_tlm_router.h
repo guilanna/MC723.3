@@ -36,6 +36,7 @@ class ac_tlm_router :
 {
 public:
   ac_tlm_port DM_port;
+  ac_tlm_port L_port;
   /// Exposed port with ArchC interface
   sc_export< ac_tlm_transport_if > target_export;
 
@@ -47,8 +48,11 @@ public:
    * @return A response packet to be send
   */
   ac_tlm_rsp transport( const ac_tlm_req &request ) {
-
-    return DM_port -> transport(request);
+      if(request.addr < 5242880){
+		return DM_port -> transport(request);
+	}else{
+		return L_port -> transport(request);
+	}
   }
 
 
